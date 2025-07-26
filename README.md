@@ -5,7 +5,7 @@ This project demonstrates a secure client-server setup using the FastMCP framewo
 1.  **An MCP Server**: A `FastMCP` server that exposes a simple `reverse_tool`. It's protected by Azure Entra ID, requiring a valid JWT Bearer token for access.
 2.  **An MCP Client**: A command-line client that authenticates against Azure Entra ID using a device flow, obtains a JWT token, and uses it to communicate with the secure MCP server.
 
-⚠️ **Important:** this does not follow the MCP authorization specification (e.g., with dynamic client registration etc...); this simply implements bearer auth as discussed here: https://gofastmcp.com/servers/auth/bearer; both the FastMCP server and cliet support this; this works with any auth service; this post uses Entra ID as an example
+⚠️ **Important:** this does not follow the MCP authorization specification (e.g., with dynamic client registration etc...); this simply implements bearer auth as discussed here: https://gofastmcp.com/servers/auth/bearer; both the FastMCP server and client support this; this works with any auth service; this post uses Entra ID as an example
 
 ## Features
 
