@@ -26,7 +26,7 @@ graph TD
     AAD --> TC
     TC --> C
     
-    C --> |API Call with Bearer Token| AUTH
+    C --> |MCP Tool Call with Bearer Token| AUTH
     
     S --> AUTH --> TOOL
 ```
