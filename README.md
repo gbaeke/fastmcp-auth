@@ -8,30 +8,27 @@ This project demonstrates a secure client-server setup using the FastMCP framewo
 ⚠️ **Important:** this does not follow the MCP authorization specification (e.g., with dynamic client registration etc...); this simply implements bearer auth as discussed here: https://gofastmcp.com/servers/auth/bearer; both the FastMCP server and client support this; this works with any auth service; this post uses Entra ID as an example
 
 ## Diagram
+
 ```mermaid
-flowchart TD
-    subgraph Azure Entra ID
-        AAD[Azure Entra ID<br/>OAuth 2.0 Authority]
-    end
-
-    subgraph Client Machine
-        CLI[MCP Client<br/>mcp_client.py]
-        Browser[Web Browser]
-    end
-
-    subgraph Server Machine
-        Srv[MCP Server<br/>mcp/main.py]
-    end
-
-    CLI -- "1. Device Flow Initiation" --> AAD
-    AAD -- "2. Device Code & Verification URL" --> CLI
-    CLI -- "3. Prompt User" --> Browser
-    Browser -- "4. User Authenticates & Grants Consent" --> AAD
-    AAD -- "5. Issues Access Token" --> CLI
-    CLI -- "6. Authenticated API Call<br/>Bearer Token" --> Srv
-    Srv -- "7. Token Validation<br/>via JWKS from AAD" --> AAD
-    Srv -- "8. Response<br/>reverse_tool" --> CLI
-```
+graph TD
+    AAD[Azure Entra ID<br>OAuth 2.0/JWT Provider] 
+    
+    C[MCP Client<br>mcp_client.py]
+    DF[MSAL Device Flow]
+    TC[Token Cache<br>.token_cache.json]
+    
+    S[FastMCP Server<br>mcp/main.py]
+    AUTH[BearerAuthProvider]
+    TOOL[reverse_tool]
+    
+    C --> DF
+    DF --> AAD
+    AAD --> TC
+    TC --> C
+    
+    C --> |API Call with Bearer Token| AUTH
+    
+    S --> AUTH --> TOOL
 ```
 
 ## Features
