@@ -10,6 +10,7 @@ from fastmcp import FastMCP, Context
 from fastmcp.server.auth import BearerAuthProvider
 from fastmcp.server.dependencies import get_access_token, AccessToken
 import asyncio
+import random
 
 # Load environment variables from .env file
 load_dotenv()
@@ -71,6 +72,25 @@ async def reverse_tool(ctx: Context, query: str) -> dict:
     reversed_query = query[::-1]
 
     return {"reversed_query": reversed_query}
+
+@mcp.tool()
+async def random_number_tool(ctx: Context, min: int, max: int) -> dict:
+    """
+    Generate a random integer between min and max (inclusive).
+
+    Args:
+        ctx: FastMCP context
+        min: Minimum value (inclusive)
+        max: Maximum value (inclusive)
+
+    Returns:
+        A dictionary with the generated random number
+    """
+    logger.info(f"Random number tool called with min: {min}, max: {max}")
+    if min > max:
+        raise ValueError("min must be less than or equal to max")
+    number = random.randint(min, max)
+    return {"random_number": number}
     
 def main():
     """Main entry point for the FastMCP server"""
