@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+*.pot
+*.mo
+*.env
+.env
+venv/
+ENV/
+env/
+.venv/
+
+# React
+node_modules/
+build/
+dist/
+.env
+.env.*
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# General
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/
+*.bak
+*.tmp
+
+# Ignore lock files (optional, uncomment if desired)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+.token_cache.json
+uv.lock

@@ -1,0 +1,27 @@
+###
+# Test reverse endpoint without authentication (should fail with 401 Unauthorized)
+POST http://localhost:8880/reverse
+Content-Type: application/json
+
+{
+  "input_string": "Hello World"
+}
+
+###
+# To test with authentication, you'll need a valid JWT token
+# Replace YOUR_ACCESS_TOKEN with the actual token
+POST http://localhost:8880/reverse
+Content-Type: application/json
+Authorization: Bearer 
+{
+  "input_string": "Hello World"
+}
+
+###
+# Test the non-authenticated endpoint (should work without token)
+POST http://localhost:8880/reverse-noauth
+Content-Type: application/json
+
+{
+  "input_string": "Hello World"
+}

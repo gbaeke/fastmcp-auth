@@ -1,0 +1,20 @@
+[project]
+name = "fastmcp-auth"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.116.1",
+    "fastmcp>=2.10.6",
+    "jose>=1.0.0",
+    "jsonschema>=4.25.0",
+    "jwt>=1.4.0",
+    "msal>=1.33.0",
+    "openai-agents>=0.2.3",
+    "python-dotenv>=1.1.1",
+    "python-jose[cryptography]>=3.5.0",
+    "redis>=6.2.0",
+    "requests>=2.32.4",
+    "uvicorn>=0.35.0",
+]
