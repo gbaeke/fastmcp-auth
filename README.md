@@ -4,6 +4,7 @@ This project demonstrates a secure client-server setup using the FastMCP framewo
 
 1.  **An MCP Server**: A `FastMCP` server that exposes a simple `reverse_tool`. It's protected by Azure Entra ID, requiring a valid JWT Bearer token for access.
 2.  **An MCP Client**: A command-line client that authenticates against Azure Entra ID using a device flow, obtains a JWT token, and uses it to communicate with the secure MCP server.
+3.  **An Agent**: An agent implementation that uses the FastMCP client to connect to the server and utilize its tools.
 
 ⚠️ **Important:** this does not follow the MCP authorization specification (e.g., with dynamic client registration etc...); this simply implements bearer auth as discussed here: https://gofastmcp.com/servers/auth/bearer; both the FastMCP server and client support this; this works with any auth service; this post uses Entra ID as an example
 
@@ -39,6 +40,7 @@ graph TD
 -   **Asynchronous Communication**: Built on `asyncio` for efficient, non-blocking operations.
 -   **Progress Reporting**: The server's tool reports progress back to the client during execution.
 -   **Optional Authentication**: The client can bypass authentication for testing against an unsecured server.
+-   **Agent Implementation**: An agent that utilizes the FastMCP client to connect to tools on the server.
 
 ---
 
@@ -46,6 +48,8 @@ graph TD
 
 ```
 .
+├── agent/                # Agent implementation using the FastMCP client
+│   └── main.py           # The agent application using FastMCP client
 ├── api/                  # Alternative FastAPI implementation
 ├── mcp/
 │   └── main.py           # The FastMCP server application
@@ -156,6 +160,16 @@ python mcp_client.py --no-auth
 
 This will skip the token acquisition process and send requests without an `Authorization` header.
 
+### 3. Run the Agent
+
+To run the agent, create a `.env` file in the `agent` folder with your Azure Entra ID configuration and then execute:
+
+```bash
+python agent/main.py
+```
+
+The agent will authenticate with Azure Entra ID, connect to the MCP server, and provide a rich UI for interacting with the tools.
+
 ---
 
 ## How It Works
@@ -179,3 +193,10 @@ This will skip the token acquisition process and send requests without an `Autho
 -   **Device Flow**: For a command-line application, the device flow provides a secure way for users to sign in through their browser without the application having to handle credentials directly.
 -   **Token Cache**: `msal` provides a serializable token cache. The client script saves the cache to a local file (`.token_cache.json`) and loads it on startup. This provides a seamless single sign-on (SSO) experience after the first login.
 -   **API Calls**: Once the `access_token` is obtained, it's included in the `Authorization` header of the HTTP requests sent to the MCP server by the `StreamableHttpTransport`.
+
+### Agent (`agent/main.py`)
+
+-   **Agent Implementation**: Uses the FastMCP client to connect to the server tools.
+-   **Authentication**: Similar to the client, it uses Azure Entra ID for authentication.
+-   **Rich UI**: Implements a rich console UI for interaction; when executing multiple tools simultaneously, progress indication might be hidden (UI is not the focus here so left it like that)
+-   **Environment Configuration**: Configures the agent using environment variables in a local `.env` file.
