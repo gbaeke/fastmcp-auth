@@ -1,0 +1,5 @@
+chainlit>=0.7.0
+msal>=1.25.0
+python-dotenv>=1.0.0
+fastmcp
+openai-agents

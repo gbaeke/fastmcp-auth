@@ -48,3 +48,4 @@ yarn-error.log*
 
 .token_cache.json
 uv.lock
+.chainlit
