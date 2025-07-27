@@ -190,6 +190,7 @@ async def my_progress_handler(
     total: float | None, 
     message: str | None
 ) -> None:
+    """Handle progress updates for tools (FastMCP specific)"""
     global _progress_live, _progress, _task_id, _last_update_time
     
     # Initialize progress if not already done
@@ -281,11 +282,12 @@ async def run_tool(client: MCPClient, tool_name: str, params: Dict[str, Any], pr
 
 
 async def create_agent(client: MCPClient = None):
+    """Create agent with OpenAI Agents SDK"""
 
     @function_tool()
     async def reverse_tool(query: str) -> str:
-        """A simple tool that reverses the input string."""
-            # simply call the tool from the MCP server
+        """Reverse a string"""
+
         try:
             result = await run_tool(client, "reverse_tool", {"query": "Hello from MCP client!"}, progress_handler=my_progress_handler)
             logger.info(f"Result from reverse_tool: {result}")
@@ -304,7 +306,7 @@ async def create_agent(client: MCPClient = None):
             return result.structured_content.get("random_number", None)
         except Exception as e:
             logger.warning(f"Could not call random_number_tool: {e}")
-            return None
+            return "Could not generate random number"
         
     with console.status("[bold magenta]Creating agent...") as status:
         try:
@@ -383,8 +385,9 @@ async def run_agent(skip_auth: bool = False):
     # list tools
     tools = await list_tools(client)
 
-    # simply call the tool from the MCP server
+    # just run the tool reverse_tool to test the connection
     try:
+        # run with progress handler because reverse_tool is a long-running tool that sends progress updates
         result = await run_tool(client, "reverse_tool", {"query": "Hello from MCP client!"}, progress_handler=my_progress_handler)
         logger.info(f"Result from reverse_tool: {result}")
     except Exception as e:
@@ -408,7 +411,6 @@ async def run_agent(skip_auth: bool = False):
         console.print(Panel(f"[green]{result.final_output}", 
                            title="Agent Response", 
                            border_style="green"))
-
 
 @click.command()
 @click.option('-n', '--no-auth', is_flag=True, help='Skip authentication and connect without JWT token')
